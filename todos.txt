@@ -1,4 +1,5 @@
 Laundry
 Groceries
 Learn Golang
-
+Cook meals
+Have a good swim

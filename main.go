@@ -28,9 +28,10 @@ func write(resWriter http.ResponseWriter, msg string) {
 
 func englishHandler(resWriter http.ResponseWriter,
 	request *http.Request) {
-	write(resWriter, `Hello, this is a todo list web app,
+	write(resWriter, `
+	Hello, this is a todo list web app,
 	written in Go lang,
-	based in Model–view–controller (MVC) pattern,
+	based on Model–view–controller (MVC) pattern,
 	Learned from Derek Banas,
 	powered by greybluesea`)
 }
@@ -112,6 +113,7 @@ func createHandler(writer http.ResponseWriter,
 	file, err := os.OpenFile("todos.txt", options, os.FileMode(0600))
 	errorCheck(err)
 	// Append new text to file
+	todo += "\n"
 	_, err = fmt.Fprint(file, todo)
 	errorCheck(err)
 	// Close file
