@@ -113,8 +113,9 @@ func createHandler(writer http.ResponseWriter,
 	file, err := os.OpenFile("todos.txt", options, os.FileMode(0600))
 	errorCheck(err)
 	// Append new text to file
-	todo += "\n"
-	_, err = fmt.Fprint(file, todo)
+	//todo += "\n"
+	//_, err = fmt.Fprint(file, todo)
+	_, err = fmt.Fprintln(file, todo)
 	errorCheck(err)
 	// Close file
 	err = file.Close()
