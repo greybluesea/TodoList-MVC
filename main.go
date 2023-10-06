@@ -130,9 +130,10 @@ func main() {
 	// When it receives a request it calls
 	// the correct Handler
 	http.HandleFunc("/hello", englishHandler)
-	//	http.HandleFunc("/hola", spanishHandler)
-	//	http.HandleFunc("/bonjour", frenchHandler)
+	http.HandleFunc("/hola", spanishHandler)
+	http.HandleFunc("/bonjour", frenchHandler)
 	http.HandleFunc("/todolist", todolistHandler)
+	http.HandleFunc("/", todolistHandler)
 	http.HandleFunc("/new", newHandler)
 	http.HandleFunc("/create", createHandler)
 
