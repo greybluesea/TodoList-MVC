@@ -26,7 +26,21 @@ func write(resWriter http.ResponseWriter, msg string) {
 
 }
 
-func englishHandler(resWriter http.ResponseWriter,
+func main() {
+
+	http.HandleFunc("/", todolistHandler)
+	http.HandleFunc("/todolist", todolistHandler)
+
+	http.HandleFunc("/hello", helloHandler)
+
+	http.HandleFunc("/new", newHandler)
+	http.HandleFunc("/create", createHandler)
+
+	err := http.ListenAndServe("localhost:8080", nil)
+	log.Fatal(err)
+}
+
+func helloHandler(resWriter http.ResponseWriter,
 	request *http.Request) {
 	write(resWriter, `
 	Hello, this is a todo list web app,
@@ -34,16 +48,6 @@ func englishHandler(resWriter http.ResponseWriter,
 	based on Model–view–controller (MVC) pattern,
 	Learned from Derek Banas,
 	powered by greybluesea`)
-}
-
-func spanishHandler(writer http.ResponseWriter,
-	request *http.Request) {
-	write(writer, "Hola Internet")
-}
-
-func frenchHandler(writer http.ResponseWriter,
-	request *http.Request) {
-	write(writer, "Bonjour Internet")
 }
 
 func todolistHandler(writer http.ResponseWriter,
@@ -124,22 +128,4 @@ func createHandler(writer http.ResponseWriter,
 	// ResponseWriter, original request,
 	// and a successful request message
 	http.Redirect(writer, request, "/todolist", http.StatusFound)
-}
-func main() {
-	// Our app is available at directory
-	// hello for the localhost port 8080
-	// When it receives a request it calls
-	// the correct Handler
-	http.HandleFunc("/hello", englishHandler)
-	http.HandleFunc("/hola", spanishHandler)
-	http.HandleFunc("/bonjour", frenchHandler)
-	http.HandleFunc("/todolist", todolistHandler)
-	http.HandleFunc("/", todolistHandler)
-	http.HandleFunc("/new", newHandler)
-	http.HandleFunc("/create", createHandler)
-
-	// Listens for browser requests and responds
-	// Only receives a value if there is an error
-	err := http.ListenAndServe("localhost:8080", nil)
-	log.Fatal(err)
 }
