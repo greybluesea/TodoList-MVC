@@ -4,4 +4,4 @@
 - based on Model–view–controller (MVC) pattern
 - Learned from Derek Banas, powered by greybluesea
 
-Youtube: [https://youtu.be/6kLNaPp-zjg](https://youtu.be/6kLNaPp-zjg)
+Youtube: [https://www.youtube.com/watch?v=ShsQheow0VM](https://www.youtube.com/watch?v=ShsQheow0VM)

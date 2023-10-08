@@ -1,4 +1,3 @@
 Laundry
 Groceries
 Learn Golang
-Cook meals

@@ -21,12 +21,6 @@ func errorCheck(err error) {
 	}
 }
 
-func write(resWriter http.ResponseWriter, msg string) {
-	_, err := resWriter.Write([]byte(msg))
-	errorCheck(err)
-
-}
-
 func main() {
 
 	http.HandleFunc("/", todolistHandler)
@@ -42,14 +36,15 @@ func main() {
 	log.Fatal(err)
 }
 
-func helloHandler(resWriter http.ResponseWriter,
+func helloHandler(writer http.ResponseWriter,
 	request *http.Request) {
-	write(resWriter, `
+	_, err := writer.Write([]byte(`
 	Hello, this is a todo list web app,
 	written in Go lang,
 	based on Model–view–controller (MVC) pattern,
 	Learned from Derek Banas,
-	powered by greybluesea`)
+	powered by greybluesea`))
+	errorCheck(err)
 }
 
 func todolistHandler(writer http.ResponseWriter,
@@ -185,3 +180,9 @@ func writeTodos(fileName string, todos []string) error {
 	}
 	return nil
 }
+
+/* func castAndWrite(writer http.ResponseWriter, msg string) {
+	_, err := writer.Write([]byte(msg))
+	errorCheck(err)
+
+} */
