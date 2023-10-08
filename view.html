@@ -1,9 +1,14 @@
 <h1>To-Do List</h1>
 
 <h3>Total to-dos count:{{/* Displays Number of To-Dos */}} {{.Count}}</h3>
-<a href="/new"> Add a To-Do </a><br />
+<h3><a href="/new"> Add a To-Do </a><br /></h3>
 <div>
-  {{/* Cycles through todos and renders each */}} {{range .Todos}}
-  <p>{{.}}</p>
+  {{/* Cycles through todos and renders each */}} {{range $index, $todo :=
+  .Todos}}
+  <form action="/delete" method="post" style="display: block">
+    <p style="display: inline">{{$todo}}</p>
+    <input type="hidden" name="index" value="{{$index}}" />
+    <button type="submit">Delete</button>
+  </form>
   {{end}}
 </div>

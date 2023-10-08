@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"text/template"
 )
 
@@ -35,6 +36,7 @@ func main() {
 
 	http.HandleFunc("/new", newHandler)
 	http.HandleFunc("/create", createHandler)
+	http.HandleFunc("/delete", deleteHandler)
 
 	err := http.ListenAndServe("localhost:8080", nil)
 	log.Fatal(err)
@@ -128,4 +130,58 @@ func createHandler(writer http.ResponseWriter,
 	// ResponseWriter, original request,
 	// and a successful request message
 	http.Redirect(writer, request, "/todolist", http.StatusFound)
+}
+
+func deleteHandler(writer http.ResponseWriter, request *http.Request) {
+	if request.Method != http.MethodPost {
+		http.Error(writer, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Get the index of the To-Do item to delete from the form
+	indexStr := request.FormValue("index")
+	index, err := strconv.Atoi(indexStr)
+	if err != nil {
+		http.Error(writer, "Invalid index", http.StatusBadRequest)
+		return
+	}
+
+	// Get the current list of To-Do items
+	todoStrs := getTodos("todos.txt")
+
+	// Check if the index is valid
+	if index >= 0 && index < len(todoStrs) {
+		// Remove the item at the specified index
+		todoStrs = append(todoStrs[:index], todoStrs[index+1:]...)
+
+		// Write the updated list of To-Do items back to the file
+		err := writeTodos("todos.txt", todoStrs)
+		if err != nil {
+			http.Error(writer, "Failed to update To-Do list", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	// Redirect to the To-Do list page
+	http.Redirect(writer, request, "/todolist", http.StatusFound)
+}
+
+// Add a function to write the updated To-Do list to the file
+func writeTodos(fileName string, todos []string) error {
+	// Open file with options and permissions
+	options := os.O_WRONLY | os.O_TRUNC | os.O_CREATE
+	file, err := os.OpenFile(fileName, options, os.FileMode(0600))
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	// Write each To-Do item to the file
+	for _, todo := range todos {
+		_, err := fmt.Fprintln(file, todo)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
